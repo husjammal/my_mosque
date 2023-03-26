@@ -1,3 +1,4 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:mymosque/app/home.dart';
 import 'package:mymosque/app/pages/duaa/duaa.dart';
@@ -39,8 +40,30 @@ class _InitialScreenState extends State<InitialScreen> {
     var response = await postRequest(linkVersion, {
       "state": "true",
     });
-    versionDataList = response['data'] as List;
-
+    print(response);
+    if (response['status'] == "success") {
+      versionDataList = response['data'] as List;
+    } else {
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.INFO,
+        borderSide: BorderSide(color: Colors.green, width: 2),
+        buttonsBorderRadius: BorderRadius.all(Radius.circular(2)),
+        headerAnimationLoop: false,
+        animType: AnimType.BOTTOMSLIDE,
+        title: 'معلومات',
+        desc: 'هناك مشكلة في الاتصال بالسيرفر ...',
+        showCloseIcon: true,
+        btnCancelOnPress: () {
+          sharedPref.clear();
+          Navigator.of(context)
+              .pushNamedAndRemoveUntil("login", (route) => false);
+        },
+        btnOkOnPress: () {
+          getVersion();
+        },
+      )..show();
+    }
     isLoading = false;
     setState(() {});
     print("versionData List $versionDataList");

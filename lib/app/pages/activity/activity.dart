@@ -12,6 +12,8 @@ import 'package:mymosque/constant/colorConfig.dart';
 // Creating a stateful widget to manage
 // the state of the app
 class Activity extends StatefulWidget {
+  const Activity({super.key});
+
   @override
   _ActivityState createState() => _ActivityState();
 }
